@@ -1,0 +1,198 @@
+openapi: 3.0.3
+info:
+  title: API de Alumnos
+  description: |
+    Microservicio base para la gestión de alumnos (CRUD) construido con
+    Spring Boot y arquitectura limpia, usando SQLite como base de datos.
+
+    ### Recursos de documentación
+    - **Swagger UI**: `/swagger-ui.html`
+    - **Redoc**: `/redoc.html`
+    - **Home**: `/`
+  version: 1.0.0
+  contact:
+    name: Ingeniería DevOps - Duoc UC
+    email: devops@duocuc.cl
+  license:
+    name: Uso académico
+servers:
+  - url: http://localhost:8080
+    description: Entorno local
+tags:
+  - name: Alumnos
+    description: Operaciones CRUD sobre alumnos
+paths:
+  /api/v1/alumnos:
+    get:
+      tags: [Alumnos]
+      summary: Lista todos los alumnos
+      operationId: listarAlumnos
+      responses:
+        '200':
+          description: Listado de alumnos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlumnoResponse'
+    post:
+      tags: [Alumnos]
+      summary: Crea un nuevo alumno
+      operationId: crearAlumno
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlumnoRequest'
+      responses:
+        '201':
+          description: Alumno creado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumnoResponse'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: RUT duplicado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/alumnos/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: Identificador del alumno
+        schema:
+          type: integer
+          format: int64
+          example: 1
+    get:
+      tags: [Alumnos]
+      summary: Obtiene un alumno por su id
+      operationId: obtenerAlumno
+      responses:
+        '200':
+          description: Alumno encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumnoResponse'
+        '404':
+          description: Alumno no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags: [Alumnos]
+      summary: Actualiza un alumno existente
+      operationId: actualizarAlumno
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlumnoRequest'
+      responses:
+        '200':
+          description: Alumno actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlumnoResponse'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Alumno no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags: [Alumnos]
+      summary: Elimina un alumno
+      operationId: eliminarAlumno
+      responses:
+        '204':
+          description: Alumno eliminado
+        '404':
+          description: Alumno no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    AlumnoRequest:
+      type: object
+      required: [rut, nombres, apellidos, email, carrera]
+      properties:
+        rut:
+          type: string
+          maxLength: 20
+          example: 12.345.678-9
+        nombres:
+          type: string
+          maxLength: 80
+          example: Ana María
+        apellidos:
+          type: string
+          maxLength: 80
+          example: Pérez Soto
+        email:
+          type: string
+          format: email
+          example: ana.perez@duocuc.cl
+        carrera:
+          type: string
+          maxLength: 100
+          example: Ingeniería en Informática
+        edad:
+          type: integer
+          minimum: 0
+          maximum: 120
+          example: 21
+    AlumnoResponse:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 1
+        - $ref: '#/components/schemas/AlumnoRequest'
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          example: 404
+        error:
+          type: string
+          example: Not Found
+        message:
+          type: string
+          example: No existe un alumno con id 99
+        path:
+          type: string
+          example: /api/v1/alumnos/99
+        details:
+          type: object
+          additionalProperties:
+            type: string

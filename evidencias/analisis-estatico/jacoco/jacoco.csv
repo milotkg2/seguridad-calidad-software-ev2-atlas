@@ -1,0 +1,15 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+alumnos-api,cl.duoc.alumnos.infrastructure.entrypoints.rest,ApiExceptionHandler,0,92,0,2,0,21,0,6,0,5
+alumnos-api,cl.duoc.alumnos.infrastructure.entrypoints.rest,AlumnoController,0,40,0,0,0,9,0,6,0,6
+alumnos-api,cl.duoc.alumnos.domain.model,Alumno,0,119,1,7,0,38,1,21,0,18
+alumnos-api,cl.duoc.alumnos.infrastructure.adapters.jpa,AlumnoGatewayImpl,0,65,0,0,0,11,0,6,0,6
+alumnos-api,cl.duoc.alumnos.infrastructure.adapters.jpa,AlumnoData,0,52,0,0,0,22,0,15,0,15
+alumnos-api,cl.duoc.alumnos.infrastructure.adapters.jpa,AlumnoMapper,0,63,0,4,0,22,0,5,0,3
+alumnos-api,cl.duoc.alumnos.application.usecase,AlumnoUseCase,0,114,0,2,0,27,0,11,0,10
+alumnos-api,cl.duoc.alumnos.domain.exception,AlumnoDuplicadoException,0,5,0,0,0,2,0,1,0,1
+alumnos-api,cl.duoc.alumnos.domain.exception,AlumnoNotFoundException,0,5,0,0,0,2,0,1,0,1
+alumnos-api,cl.duoc.alumnos.infrastructure.config,OpenApiConfig,0,31,0,0,0,9,0,2,0,2
+alumnos-api,cl.duoc.alumnos.infrastructure.config,SecurityHeadersFilter,0,28,0,0,0,8,0,2,0,2
+alumnos-api,cl.duoc.alumnos.infrastructure.entrypoints.rest.dto,AlumnoRequest,0,62,0,0,0,20,0,14,0,14
+alumnos-api,cl.duoc.alumnos.infrastructure.entrypoints.rest.dto,AlumnoResponse,0,86,0,0,0,31,0,16,0,16
+alumnos-api,cl.duoc.alumnos.infrastructure.entrypoints.rest.dto,ErrorResponse,0,60,0,0,0,25,0,13,0,13

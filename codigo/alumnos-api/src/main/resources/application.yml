@@ -1,0 +1,36 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: alumnos-api
+
+  datasource:
+    url: jdbc:sqlite:./data/alumnos.db
+    driver-class-name: org.sqlite.JDBC
+    hikari:
+      maximum-pool-size: 1
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# OpenAPI: se usa un contrato YAML propio (contract-first)
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /openapi/alumnos-openapi.yaml
+    operations-sorter: method
+    tags-sorter: alpha
+
+logging:
+  level:
+    cl.duoc.alumnos: INFO

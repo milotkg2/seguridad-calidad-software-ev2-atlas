@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API de Alumnos · Microservicio base</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="accent"></div>
+    <h1>API de Alumnos</h1>
+    <p>Microservicio base para la gestión de alumnos (CRUD) construido con Spring Boot,
+        arquitectura limpia y SQLite. Servirá como punto de partida para los siguientes
+        módulos del curso.</p>
+    <div class="badges">
+        <span class="badge">Spring Boot 3</span>
+        <span class="badge">Java 21</span>
+        <span class="badge">Maven</span>
+        <span class="badge">SQLite</span>
+        <span class="badge">OpenAPI</span>
+        <span class="badge">Arquitectura limpia</span>
+    </div>
+</header>
+
+<main>
+
+    <section>
+        <h2>Documentación de la API</h2>
+        <div class="cards">
+            <a class="card" href="/swagger-ui.html">
+                <span class="tag">Interactivo</span>
+                <h3>Swagger UI</h3>
+                <p>Explora y prueba cada endpoint directamente desde el navegador.</p>
+            </a>
+            <a class="card" href="/redoc.html">
+                <span class="tag">Lectura</span>
+                <h3>Redoc</h3>
+                <p>Documentación limpia y navegable generada desde el contrato OpenAPI.</p>
+            </a>
+            <a class="card" href="/openapi/alumnos-openapi.yaml">
+                <span class="tag">Contrato</span>
+                <h3>OpenAPI YAML</h3>
+                <p>Especificación OpenAPI 3.0 que define el contrato del microservicio.</p>
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <h2>Endpoints</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>Método</th>
+                <th>Ruta</th>
+                <th>Descripción</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><span class="method get">GET</span></td>
+                <td><code>/api/v1/alumnos</code></td>
+                <td>Lista todos los alumnos</td>
+            </tr>
+            <tr>
+                <td><span class="method get">GET</span></td>
+                <td><code>/api/v1/alumnos/{id}</code></td>
+                <td>Obtiene un alumno por su id</td>
+            </tr>
+            <tr>
+                <td><span class="method post">POST</span></td>
+                <td><code>/api/v1/alumnos</code></td>
+                <td>Crea un nuevo alumno</td>
+            </tr>
+            <tr>
+                <td><span class="method put">PUT</span></td>
+                <td><code>/api/v1/alumnos/{id}</code></td>
+                <td>Actualiza un alumno existente</td>
+            </tr>
+            <tr>
+                <td><span class="method delete">DELETE</span></td>
+                <td><code>/api/v1/alumnos/{id}</code></td>
+                <td>Elimina un alumno</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>Arquitectura limpia</h2>
+        <div class="layers">
+            <div class="layer">
+                <h3>Dominio</h3>
+                <ul>
+                    <li>Modelo <code>Alumno</code></li>
+                    <li>Puerto <code>AlumnoGateway</code></li>
+                    <li>Excepciones de negocio</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <h3>Aplicación</h3>
+                <ul>
+                    <li>Caso de uso <code>AlumnoUseCase</code></li>
+                    <li>Reglas de negocio</li>
+                    <li>Sin dependencia de frameworks</li>
+                </ul>
+            </div>
+            <div class="layer">
+                <h3>Infraestructura</h3>
+                <ul>
+                    <li>Adaptador REST</li>
+                    <li>Adaptador JPA / SQLite</li>
+                    <li>Configuración OpenAPI</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Cómo probarlo</h2>
+        <p>Crear un alumno:</p>
+        <pre><code>curl -X POST http://localhost:8080/api/v1/alumnos \
+  -H "Content-Type: application/json" \
+  -d '{"rut":"12.345.678-9","nombres":"Ana","apellidos":"Pérez",
+       "email":"ana.perez@duocuc.cl","carrera":"Ingeniería en Informática","edad":21}'</code></pre>
+        <p>Listar alumnos:</p>
+        <pre><code>curl http://localhost:8080/api/v1/alumnos</code></pre>
+    </section>
+
+</main>
+
+<footer>
+    Ingeniería DevOps · Duoc UC — microservicio base de alumnos
+</footer>
+
+</body>
+</html>

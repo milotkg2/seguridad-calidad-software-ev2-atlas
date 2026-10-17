@@ -1,0 +1,27 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### Data / SQLite ###
+data/*.db
+data/*.db-journal
+*.db
+*.db-journal
+
+### IDE ###
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+### OS ###
+.DS_Store
+
+### Logs ###
+*.log
+
+### SonarQube ###
+.scannerwork/

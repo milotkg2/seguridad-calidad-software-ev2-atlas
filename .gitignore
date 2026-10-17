@@ -1,0 +1,24 @@
+# Carpetas locales que no forman el entregable publicado
+/calidad - EJEMPLO/
+/casoC-ep02 - EJEMPLO/
+/trabajo-grupo/
+/_extract/
+/*.pdf
+/*.docx
+/*.html
+laminas-seguridad-cumplimiento.html
+
+# Compilados
+**/target/
+**/node_modules/
+**/*.class
+**/data/*.db
+
+# Secretos
+.env
+.env.*
+
+.idea/
+.vscode/
+*.log
+Dockerfile.runtime
