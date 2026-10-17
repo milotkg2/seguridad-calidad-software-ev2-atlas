@@ -1,0 +1,26 @@
+Otras herramientas — Atlas — 17 de octubre de 2026
+
+npm audit (contenedor de la API)
+  7 vulnerabilidades: 3 altas, 1 moderada, 3 bajas.
+  Están en Express 4.19.2 y dependencias. El parche propone Express 4.22.3.
+  Log: npm-audit-api.txt
+
+Trivy (imagen atlas-api)
+  Alpine: 1 media (zlib), 0 críticas y 0 altas del sistema.
+  Paquetes Node de la imagen: 36 (25 altas, 11 medias, 0 críticas).
+  Log: trivy-api.txt
+
+OWASP ZAP baseline (http://localhost:8080)
+  FAIL-NEW: 0
+  WARN-NEW: 8
+  PASS: 59
+  La pantalla publicada por nginx no envía las cabeceras que sí pone la API.
+  Informe: zap-pantalla.html
+
+k6, 200 usuarios durante 20 segundos, listado de clientes
+  4428 peticiones, 0 % de error.
+  p95 = 1,28 s. El ERS pide menos de 300 ms.
+  Log: k6-carga.txt
+
+SonarQube, ESLint y JMeter no están instalados en este equipo.
+La carga se midió con k6, que entrega usuarios concurrentes y percentil 95.

@@ -1,0 +1,16 @@
+Capturas del 17-10-2026, tomadas con el sistema Atlas encendido.
+
+01_login.png                      Pantalla de inicio de sesión
+02_clientes_admin.png             jperez ve el cliente y puede eliminar o crear
+03_confirmacion_baja.png          Confirmación antes de la baja lógica
+04_cliente_y_contratos.png        Distribuidora Andina SpA y el contrato CT-0012
+05_contrato_CT-0012.png           Estado del contrato y documentos
+06_auditoria.png                  Registro de acciones críticas
+07_usuarios.png                   Administrador y editor de la empresa
+08_editor_solo_lectura.png        editor1 no ve el botón Eliminar ni el formulario
+09_api_salud.png                  GET /api/salud → 200
+10_api_login_200.png              Login de jperez → 200
+11_api_login_401.png              Contraseña incorrecta → 401
+12_api_editor_post_403.png        El editor crea un cliente → 403
+13_api_editor_delete_403.png      El editor elimina el cliente 101 → 403
+14_swagger.png                    Documentación de la API

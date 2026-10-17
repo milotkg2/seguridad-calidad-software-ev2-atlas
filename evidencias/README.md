@@ -12,4 +12,4 @@ Registro de la corrida contra `http://localhost:3010`.
 | RF-1.2 logout | 200 |
 | RF-6 auditoría | 200 |
 
-El detalle está en `atlas/ejecucion-api.txt`.
+El detalle está en `atlas/ejecucion-api.txt`. Las capturas están en `atlas/capturas/`. Los logs de k6, npm audit, Trivy y ZAP están en `atlas/otras/`. La carga de 200 usuarios terminó con 0 % de error y p95 de 1,28 s.
