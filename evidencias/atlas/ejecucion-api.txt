@@ -1,0 +1,59 @@
+## Salud
+HTTP 200
+{"servicio":"atlas","estado":"ok"}
+
+## CP-FUN-01 login jperez
+HTTP 200
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzdWFyaW8iOiJqcGVyZXoiLCJlbXByZXNhSWQiOjEsInJvbCI6ImFkbWluaXN0cmFkb3IiLCJqdGkiOiI0NGJjZWJhNi1lNDIwLTQ3MmItODQzNS1jYTMwOWQ2MTI4YzYiLCJ0eXAiOiJhY2Nlc3MiLCJpYXQiOjE3OTIyMDg4MzMsImV4cCI6MTc5MjIwOTczM30.eEuhUZxhHBxBNtAFkI5EXVeCYefQS7hEC6sukVUF72E","refreshToken":"907a0241-077d-421a-bc8c-632eab49be94","usuario":{"id":1,"nombre_usuario":"jperez","correo":"jperez@crealab.cl","rol":"administrador","empresaId":1,"empresas":[{"empresa_id":1,"rol":"administrador","nombre":"CreaLab Spa"}]}}
+
+## Login invalido
+HTTP 401
+{"error":"Usuario o contraseña incorrectos."}
+
+## Login editor
+HTTP 200
+{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzdWFyaW8iOiJlZGl0b3IxIiwiZW1wcmVzYUlkIjoxLCJyb2wiOiJlZGl0b3IiLCJqdGkiOiJiMjFlZTdkZC04YmYyLTQzMDQtYTQ1MS1jYmJjMzJhMGJkNzgiLCJ0eXAiOiJhY2Nlc3MiLCJpYXQiOjE3OTIyMDg4MzQsImV4cCI6MTc5MjIwOTczNH0.LEJmxm2z4aG44_NMhZP88uyeFy_XeLZJoaRIRGepQ-c","refreshToken":"64198e6d-9fdb-46ab-b0ec-df821ca76f35","usuario":{"id":2,"nombre_usuario":"editor1","correo":"editor1@crealab.cl","rol":"editor","empresaId":1,"empresas":[{"empresa_id":1,"rol":"editor","nombre":"CreaLab Spa"}]}}
+
+## CP-SEG-01 editor POST
+HTTP 403
+{"error":"El rol editor solo puede visualizar datos."}
+
+## CP-SEG-01 editor DELETE
+HTTP 403
+{"error":"El rol editor solo puede visualizar datos."}
+
+## Listado clientes Andina
+HTTP 200
+{"data":[{"id":101,"nombre":"Distribuidora Andina SpA","descripcion":"Cliente pyme de referencia","direccion":"Bandera 120, Santiago","rut":"76.543.210-8","contacto":"contacto@andina.cl · +56 9 8765 4321","datosBancarios":"BancoEstado · 123456789 · cuenta vista","eliminado":false}],"total":1,"page":1,"limite":20}
+
+## Crear cliente temporal
+HTTP 201
+{"id":103,"nombre":"Pyme Temporal SpA","descripcion":"Caso de baja logica","direccion":"Santiago","rut":"77.111.111-1","contacto":"qa@temporal.cl","datosBancarios":"cuenta 999","eliminado":false}
+
+## CP-FUN-02 baja logica
+HTTP 200
+{"ok":true,"eliminacion":"logica"}
+
+## Cliente eliminado no se lista
+HTTP 404
+{"error":"Cliente no encontrado."}
+
+## Contrato CT-0012
+HTTP 200
+{"data":[{"id":1,"cliente_id":101,"codigo":"CT-0012","titulo":"Mantención anual de sistemas","descripcion":"Contrato de referencia del caso de prueba","fecha_inicio":"2026-01-01T00:00:00.000Z","fecha_termino":"2026-12-31T00:00:00.000Z","estado":"activo"}]}
+
+## CP-INT-01 subir documento
+HTTP 201
+{"id":1,"nombre":"CT-0012.png","mime":"image/png","tamano":67}
+
+## CP-INT-01 enlace temporal
+HTTP 201
+{"token":"f11686fcc2c8e0c39b69dfd7f6e03fdc1b0cf331bcfcbdb4","expira":"2026-10-24T03:47:14.549Z","url":"/api/compartir/f11686fcc2c8e0c39b69dfd7f6e03fdc1b0cf331bcfcbdb4"}
+
+## RF-6 auditoria
+HTTP 200
+{"data":[{"id":6,"accion":"compartir","entidad":"documento","entidad_id":"1","detalle":"Enlace temporal de 7 días","creado_en":"2026-10-17T03:47:14.552Z","nombre_usuario":"jperez"},{"id":5,"accion":"subir","entidad":"documento","entidad_id":"1","detalle":"CT-0012.png","creado_en":"2026-10-17T03:47:14.538Z","nombre_usuario":"jperez"},{"id":4,"accion":"eliminar","entidad":"cliente","entidad_id":"103","detalle":"Baja lógica de Pyme Temporal SpA","creado_en":"2026-10-17T03:47:14.417Z","nombre_usuario":"jperez"},{"id":3,"accion":"crear","entidad":"cliente","entidad_id":"103","detalle":"Pyme Temporal SpA","creado_en":"2026-10-17T03:47:14.404Z","nombre_usuario":"jperez"},{"id":2,"accion":"eliminar","entidad":"cliente","entidad_id":"102","detalle":"Baja lógica de Pyme Prueba","creado_en":"2026-10-17T03:32:56.117Z","nombre_usuario":"jperez"},{"id":1,"accion":"crear","entidad":"cliente","entidad_id":"102","detalle":"Pyme Prueba","creado_en":"2026-10-17T03:32:56.100Z","nombre_usuario":"jperez"}]}
+
+## RF-1.2 logout
+HTTP 200
+{"ok":true}

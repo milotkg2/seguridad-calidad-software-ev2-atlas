@@ -1,0 +1,22 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Atlas API",
+    "version": "1.0.0",
+    "description": "Gestión de clientes, contratos y documentos. ERS EP1 ISY1102."
+  },
+  "paths": {
+    "/api/auth/login": { "post": { "summary": "RF-1.1 Inicio de sesión" } },
+    "/api/auth/logout": { "post": { "summary": "RF-1.2 Cierre y revocación" } },
+    "/api/auth/refresh": { "post": { "summary": "Refresh token" } },
+    "/api/auth/register": { "post": { "summary": "RF-2.1 Registro" } },
+    "/api/empresas": { "post": { "summary": "RF-2.2 Crear empresa" } },
+    "/api/empresas/{id}/usuarios": { "get": { "summary": "RF-3 Listar usuarios" }, "post": { "summary": "RF-3.1 Crear usuario" } },
+    "/api/empresas/{id}/clients": { "get": { "summary": "RF-4.2 Listar clientes" }, "post": { "summary": "RF-4.1 Crear cliente" } },
+    "/api/empresas/{id}/clients/{clienteId}": { "put": { "summary": "RF-4.2 Editar" }, "delete": { "summary": "RF-4.2 Baja lógica" } },
+    "/api/contratos": { "post": { "summary": "RF-5.1 Crear contrato" } },
+    "/api/contratos/{id}/documentos": { "post": { "summary": "RF-5.2 Adjuntar documento" } },
+    "/api/contratos/{id}/enlace": { "post": { "summary": "RF-5.5 Enlace para compartir" } },
+    "/api/empresas/{id}/auditoria": { "get": { "summary": "RF-6 Auditoría" } }
+  }
+}

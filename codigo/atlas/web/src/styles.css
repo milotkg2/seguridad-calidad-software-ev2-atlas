@@ -1,0 +1,51 @@
+:root {
+  color-scheme: light;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #142033;
+  background: #f3f6fb;
+}
+* { box-sizing: border-box; }
+body { margin: 0; }
+button, input, select, a {
+  font: inherit;
+  min-height: 48px;
+}
+button, .enlace, a {
+  background: #0b3a6e;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+button.secundario { background: #d7e2f0; color: #142033; }
+button.peligro { background: #8c1d18; }
+button.enlace { background: transparent; color: #0b3a6e; text-align: left; padding-left: 0; }
+.pagina { max-width: 960px; margin: 0 auto; padding: 1rem; }
+.barra { display: flex; justify-content: space-between; gap: 1rem; align-items: center; flex-wrap: wrap; }
+.marca { font-size: 1.6rem; font-weight: 700; margin: 0; color: #0b3a6e; }
+.sub { margin: 0; }
+nav { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.tarjeta, section { background: #fff; border: 1px solid #c5d0e0; border-radius: 12px; padding: 1rem; margin-top: 1rem; }
+label { display: block; font-weight: 650; margin-top: 0.8rem; }
+input, select { width: 100%; border: 2px solid #35537a; border-radius: 8px; padding: 0.5rem; background: #fff; }
+.alerta { background: #fde8e6; color: #6d1612; padding: 0.8rem; border-radius: 8px; }
+.ok { background: #e5f6ea; color: #0d4a24; padding: 0.8rem; border-radius: 8px; }
+.ayuda { color: #24344d; }
+.lista { list-style: none; padding: 0; }
+.lista li { display: flex; gap: 1rem; align-items: center; justify-content: space-between; border-bottom: 1px solid #d5deea; padding: 0.4rem 0; flex-wrap: wrap; }
+.fila { display: flex; gap: 0.5rem; align-items: end; flex-wrap: wrap; }
+.fila input { width: auto; flex: 1; }
+.estado.activo { color: #0d4a24; }
+.estado.vence { color: #7a4b00; }
+.estado.expirado { color: #8c1d18; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; border-bottom: 1px solid #d5deea; padding: 0.4rem; }
+.modal { position: fixed; inset: 0; margin: auto; max-width: 32rem; height: fit-content; background: #fff; border: 3px solid #0b3a6e; padding: 1rem; border-radius: 12px; }
+@media (max-width: 700px) {
+  .pagina { padding: 0.6rem; }
+  nav button { width: 100%; }
+}

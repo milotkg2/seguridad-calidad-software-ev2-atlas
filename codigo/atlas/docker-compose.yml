@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: atlas
+      POSTGRES_USER: atlas
+      POSTGRES_PASSWORD: atlas_qa_2026
+    volumes:
+      - atlas_pg:/var/lib/postgresql/data
+      - ./api/sql/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U atlas -d atlas"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: ./api
+    environment:
+      PGHOST: db
+      PGPORT: 5432
+      PGDATABASE: atlas
+      PGUSER: atlas
+      PGPASSWORD: atlas_qa_2026
+      JWT_SECRET: atlas-qa-jwt-solo-local-2026
+      DATA_KEY: a1b2c3d4e5f60718293a4b5c6d7e8f90112233445566778899aabbccddeeff00
+      STORAGE_DIR: /data/docs
+      CORS_ORIGIN: http://localhost:8080
+    volumes:
+      - atlas_docs:/data/docs
+    ports:
+      - "3010:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build: ./web
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  atlas_pg:
+  atlas_docs:
