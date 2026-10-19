@@ -92,6 +92,19 @@ La pantalla no guarda la contraseña. El log de la API anota método, ruta, cód
 
 **Puertos.** En el navegador del equipo: pantalla 8080 y API 3010. Dentro de Docker la API escucha en el 3000. El 3010 existe porque el 3000 ya lo usaba otro proyecto (INC-01).
 
+## 4.1 Herramientas de prueba: qué hacen y cómo funcionan
+
+| Herramienta | Qué hace | Cómo funciona en Atlas |
+|---|---|---|
+| Docker Compose | Deja el sistema reproducible | Lee `docker-compose.yml` y levanta PostgreSQL, la API Node y la pantalla nginx. Entre ellos se hablan por nombre. El equipo ve 3010 y 8080 |
+| `probar.ps1` | Repite los casos funcionales y de rol | Con `curl.exe` manda cada petición y compara el HTTP. No lee el código: la API tiene que responder |
+| k6 | Mide la carga del ERS | `setup` hace un login. Luego 200 usuarios, 20 segundos, piden el listado. Calcula el p95. Código 99 = el tiempo pasó de 300 ms |
+| npm audit | Busca vulnerabilidades en las librerías | Dentro del contenedor compara `node_modules` con la base de avisos. No ataca la API. Código 1 = hay hallazgos |
+| Trivy | Busca CVE en la imagen ya armada | Recorre las capas de `atlas-api`: Alpine y los `package.json`. Incluye herramientas de Node que npm audit de la app no lista |
+| OWASP ZAP baseline | Revisa la pantalla encendida | Recorre enlaces y mira cabeceras, sin explotar. Apunta al puerto 8080. `FAIL-NEW: 0` y los avisos son cabeceras que nginx no envía |
+
+Para decirlo en la defensa: `probar.ps1`, k6 y ZAP necesitan Atlas encendido (prueba dinámica). npm audit y Trivy leen dependencias e imagen (prueba estática). ZAP en este trabajo miró la pantalla, no el puerto de la API.
+
 ---
 
 # 5. Requisitos y qué se demostró

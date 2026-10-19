@@ -160,6 +160,57 @@ La próxima subida crea de nuevo a `jperez`, `editor1`, el cliente 101 y el cont
 | `probar.ps1` no corre | Usar `powershell -ExecutionPolicy Bypass -File .\probar.ps1` dentro de `codigo\atlas` |
 | La pantalla abre y la API no | Revisar `docker compose logs api` |
 
+## Qué hace cada herramienta y cómo funciona
+
+Estas seis piezas cubren el trabajo. Las tres primeras arman el ambiente y los casos funcionales. Las cuatro últimas miden carga, dependencias y la pantalla encendida.
+
+### Docker Desktop y Docker Compose
+
+Docker ejecuta cada parte de Atlas en un contenedor: un proceso con su propio sistema de archivos, aislado del Windows. Compose lee `docker-compose.yml` y levanta tres a la vez.
+
+1. `db` arranca PostgreSQL 16 y, si el volumen está vacío, corre `init.sql`.
+2. `api` construye la imagen Node, instala las dependencias y deja Express escuchando en el puerto 3000 de esa red interna.
+3. `web` compila la pantalla React y la publica con nginx en el puerto 80 del contenedor.
+
+Entre ellos se llaman por el nombre del servicio (`db`, `api`). El equipo solo ve lo que el archivo publica: la API en http://localhost:3010 y la pantalla en http://localhost:8080. `docker compose ps` muestra si ese proceso sigue vivo. `docker compose down` lo detiene.
+
+### probar.ps1
+
+Es la prueba funcional y de seguridad de la API encendida. El script llama a `curl.exe`, envía el JSON de cada caso y compara el código HTTP con el esperado. Cuenta correctas y fallidas. Para el informe vale el 200 del login, el 401 de la clave mala, el 403 del editor, la baja lógica y el documento. No abre el código fuente: si la API está apagada, no hay resultado.
+
+### k6
+
+k6 mide carga. El archivo `pruebas\carga.js` tiene dos funciones. `setup` hace un solo login de `jperez` y guarda el token. `default` es lo que repite cada usuario virtual: un GET del listado de clientes con ese token.
+
+`options` pide 200 usuarios a la vez durante 20 segundos, y dos umbrales: menos de 1 % de respuestas fallidas y percentil 95 bajo 300 ms. El percentil 95 es el tiempo por debajo del cual cayó el 95 % de las peticiones. k6 corre dentro de su propio contenedor y llega a Atlas por `host.docker.internal:3010`, que es el Windows visto desde Docker. Al terminar calcula promedios y el p95. Si un umbral no se cumple, el proceso termina con código 99 aunque todas las respuestas hayan sido 200. En esta corrida el fallo fue el tiempo, no la cantidad de errores.
+
+### npm audit
+
+npm audit revisa las dependencias de la API sin llamarla. Dentro del contenedor, npm lee las versiones instaladas en `node_modules` y las compara con la base pública de avisos. Si una versión tiene una vulnerabilidad conocida, la lista con gravedad baja, moderada o alta, y dice qué paquete la arrastra. El código 1 significa «hay avisos», no «el comando se rompió». El arreglo automático que propone sube Express a 4.22.3, fuera de la versión fijada en el proyecto. Es un análisis estático de dependencias: la API puede estar encendida, pero el informe no sale de las peticiones HTTP.
+
+### Trivy
+
+Trivy lee la imagen `atlas-api` ya construida, capa por capa. Detecta el sistema operativo (Alpine) y los `package.json` de Node que quedaron dentro. Compara esas versiones con su base de CVE. No abre el navegador ni envía un login.
+
+Se diferencia de npm audit en el alcance. npm audit mira las librerías de la aplicación. Trivy mira además el Alpine de la imagen y herramientas que vienen con Node, como el propio npm. Por eso el número de hallazgos altos de Trivy es mayor. El código 0 significa que el escaneo terminó y escribió la tabla.
+
+### OWASP ZAP baseline
+
+ZAP prueba la aplicación encendida. En modo baseline recorre los enlaces de la página (spider) y revisa las respuestas que ya recibió (análisis pasivo): cabeceras, caché y datos que el servidor revela. Con la bandera `-I` los avisos no cortan el comando.
+
+El destino de este paso es http://localhost:8080, la pantalla de nginx, no el puerto 3010 de la API. Por eso los avisos salen de la pantalla: faltan cabeceras como X-Frame-Options y Content-Security-Policy. `FAIL-NEW: 0` significa que no apareció una alerta de la categoría fallo. `WARN-NEW` son recomendaciones. `PASS` son controles que sí estaban en orden. El HTML `zap-pantalla.html` es el informe para abrir en el navegador.
+
+### Cómo se relacionan
+
+| Herramienta | Tipo | Qué mira | Atlas tiene que estar encendido |
+|---|---|---|---|
+| Docker Compose | Ambiente | Que los tres servicios existan | Los crea |
+| probar.ps1 | Funcional y seguridad | Códigos HTTP de login, rol, baja y documento | Sí, puerto 3010 |
+| k6 | Carga | 200 usuarios y el p95 del listado | Sí, puerto 3010 |
+| npm audit | Dependencias, estático | Avisos de las librerías de la API | Basta el contenedor de la API |
+| Trivy | Imagen, estático | CVE de Alpine y de los paquetes dentro de la imagen | Basta que la imagen exista |
+| OWASP ZAP | Dinámico, pasivo | Cabeceras y respuestas de la pantalla | Sí, puerto 8080 |
+
 ## Antes de los pasos 11 a 14
 
 Los pasos 11 a 14 se corren con Atlas encendido. No hace falta instalar k6, npm, Trivy ni ZAP en Windows: cada uno entra por una imagen de Docker. La primera vez esa imagen se descarga y el comando puede tardar varios minutos. Una línea que diga `Unable to find image` significa que la está bajando, no que la prueba falló.
